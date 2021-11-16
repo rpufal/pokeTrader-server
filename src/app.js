@@ -21,16 +21,34 @@ server.listen(port);
 
 app.use(cors());
 app.use(bodyParser.json());
+const rooms = new Map()
 
 
 io.on('connection', (socket) => {
-  socket.on('user', ({user}) => {
-    socket.broadcast.emit('user', user)
-  })
-  socket.on('userPokemon', (updatedList, username) => {
-    socket.broadcast.emit('partnerPokemon', {updatedList, username})
+  
+  socket.on('join', ({roomid,user}) => {
+    socket.join(roomid)
+    if(!rooms.has(roomid)){
+        // cria sala
+        rooms.set(roomid,[user])
+    }else{
+      // pego usuarios da sala
+      const roomUsers =  rooms.get(roomid)
+      socket.emit('new_user',{user:roomUsers[0]})
+      // adiciona o novo user
+      roomUsers.push(user)
+      // atualiza a sala
+      rooms.set(roomid,roomUsers)
+    }
+    console.log(`Adicionando usuario ${socket.id} na sala ${roomid}`)
+    socket.to(roomid).emit("new_user",{user});
   });
-  socket.on('readyTrade', ({ready}) => socket.broadcast.emit('readyTrade', ready));
+
+  socket.on('updateList', ({roomid,updatedList}) => {
+    socket.to(roomid).emit('updateList',  {updatedList})
+  });
+  socket.on('readyTrade', ({roomid,ready}) => socket.to(roomid).emit('readyTrade', ready));
+
 });
 
 
