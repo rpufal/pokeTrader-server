@@ -14,7 +14,7 @@ console.log(`Api rodando na porta ${port}!`);
 
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
-  cors: { origin: 'http://localhost:3000', methods: ['GET', 'POST', 'PUT', 'DELETE'] },
+  cors: { origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE'] },
 });
 server.listen(port);
 
