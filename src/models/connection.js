@@ -3,7 +3,7 @@ require('dotenv/config');
 
 const MONGO_DB_URL = process.env.MONGO_DB_URL 
 ? process.env.MONGO_DB_URL :'mongodb://mongodb:27017/bxblue';
-const DB_NAME = 'bxblue';
+const DB_NAME = 'pokeTrader';
 
 async function connection() {
   return MongoClient.connect(MONGO_DB_URL, {
