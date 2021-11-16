@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv/config');
 const bodyParser = require('body-parser');
 const errorHandling = require('./middlewares/errorHandling');
 const trade = require('./routes/trade');
@@ -6,9 +7,9 @@ const cors = require('cors');
 const http = require('http');
 
 const app = express();
-const port = process.env.port || 3001;
+const port = process.env.PORT || 3001;
 
-console.log(`Api rodando na porta ${port}`);
+console.log(`Api rodando na porta ${port}!`);
 
 
 const server = http.createServer(app);
